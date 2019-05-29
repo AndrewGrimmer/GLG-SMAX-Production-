@@ -12,14 +12,9 @@ view: Requests {
 
   dimension: ASSIGNEDTOPERSON {
     description: "Assignee ID"
+    value_format: "0"
     type: number
     sql: ${TABLE}."ASSIGNEDTOPERSON" ;;
-  }
-  dimension: ASSIGNEDPERSON {
-    type: string
-    sql:
-       ( p."NAME" FROM view_321782990.person p INNER JOIN view_321782990.request r ON p."ID" = r."ASSIGNEDTOPERSON")
-               ;;
   }
 
   dimension: ASSIGNEDTOGROUP {
