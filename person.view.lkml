@@ -11,4 +11,8 @@ view: person {
     type:  string
     sql: ${TABLE}."NAME" ;;
   }
+  dimension: COMPANY {
+    type:  number
+    sql:  ${TABLE}."COMPANY" ;;
+  }
 }

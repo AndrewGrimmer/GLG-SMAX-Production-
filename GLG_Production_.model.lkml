@@ -13,9 +13,20 @@ explore:Requests {
     sql_on: ${Requests.ASSIGNEDTOGROUP} = ${group.ID}  ;;
     relationship: one_to_one
   }
+  join: company {
+    type: left_outer
+    sql_on: ${person.COMPANY} = ${company.id} ;;
+    relationship: one_to_one
+  }
 }
 
-explore: person {}
+explore: person {
+  join: company {
+    type:  left_outer
+    sql_on:  ${person.COMPANY} = ${company.id} ;;
+    relationship: one_to_one
+  }
+}
 
 explore: group {}
 
@@ -31,3 +42,5 @@ explore: incident {
     relationship: one_to_one
   }
 }
+
+explore: company {}
