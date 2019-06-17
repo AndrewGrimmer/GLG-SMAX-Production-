@@ -88,4 +88,8 @@ view: Requests {
   set: request_details {
     fields: [ID, CREATETIME, STATUS, ASSIGNEDTOPERSON, ASSIGNEDTOGROUP]
   }
+  measure: isCurrentlyUpdate{
+    type: yesno
+    sql:  ${TABLE}."LASTUPDATETIME" <= now() AND ${TABLE}."LASTUPDATETIME" >= CURRENT_DATE + INTERVAL '5 Days' ;;
+  }
 }
