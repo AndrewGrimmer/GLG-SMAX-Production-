@@ -6,7 +6,7 @@ view: Requests {
     value_format: "0"
     primary_key: yes
     type: number
-    drill_fields: [request_details*]
+    drill_fields: [ID]
     sql: ${TABLE}."ID" ;;
   }
 
@@ -55,7 +55,7 @@ view: Requests {
 
   dimension: STATUS {
     type: string
-    sql: SUBSTRING(${TABLE}."STATUS", 14) ;;
+    sql: CASE WHEN RIGHT(${TABLE}."STATUS", 2) NOT LIKE '_C' THEN SUBSTRING(${TABLE}."STATUS", 14) else SUBSTRING(${TABLE}."STATUS", 0, length(${TABLE}."STATUS")-1) end;;
   }
 
   dimension: LASTUPDATETIME{
@@ -65,7 +65,7 @@ view: Requests {
 
   dimension: isCurrentUpdate{
     type: yesno
-    sql:  ${TABLE}."LASTUPDATETIME" <= now() AND ${TABLE}."LASTUPDATETIME" >= CURRENT_DATE + INTERVAL '5 Days' ;;
+    sql:  ${TABLE}."LASTUPDATETIME" <= now() AND ${TABLE}."LASTUPDATETIME" >= CURRENT_TIMESTAMP - INTERVAL '5 Days' ;;
   }
 ############### measure defintions ###############
   measure: URGENCYCOUNT {
@@ -82,14 +82,7 @@ view: Requests {
     drill_fields: [request_details*]
   }
 
-  measure: NOISE {
-    sql: COUNT(${TABLE}."ID" / 9) + (X / 9)/2;;
-  }
   set: request_details {
     fields: [ID, CREATETIME, STATUS, ASSIGNEDTOPERSON, ASSIGNEDTOGROUP]
-  }
-  measure: isCurrentlyUpdate{
-    type: yesno
-    sql:  ${TABLE}."LASTUPDATETIME" <= now() AND ${TABLE}."LASTUPDATETIME" >= CURRENT_DATE + INTERVAL '5 Days' ;;
   }
 }
